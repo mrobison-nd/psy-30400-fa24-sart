@@ -123,6 +123,7 @@ var text;
 var key_resp_2;
 var endPracticeClock;
 var text_6;
+var key_resp_5;
 var exitRoutineClock;
 var text_7;
 var globalClock;
@@ -133,7 +134,7 @@ async function experimentInit() {
   text_4 = new visual.TextStim({
     win: psychoJS.window,
     name: 'text_4',
-    text: 'Welcome!\n\nOn each trial of this task, you will see a single digit presented at the center of the screen. The digit will appear only briefly. Your task is to press the spacebar anytime you see any digit EXCEPT for 3. If you see a 3, do NOT press anything!\n\nWe will start with some practice trials.\n\nPress the spacebar to begin...',
+    text: 'Welcome!\n\nOn each trial of this task, you will see a single digit presented at the center of the screen. The digit will appear only briefly. Your task is to press the spacebar anytime you see any digit EXCEPT for 3. If you see a 3, do NOT press anything!\n\nYou can press the spacebar either while the digit or is on the screen or anytime before the next digit appears. But the trials will happen quickly!\n\nWe will start with some practice.\n\nPress the spacebar to begin...',
     font: 'Arial',
     units: undefined, 
     pos: [0, 0], draggable: false, height: 0.03,  wrapWidth: undefined, ori: 0.0,
@@ -187,6 +188,8 @@ async function experimentInit() {
     color: new util.Color('black'),  opacity: undefined,
     depth: 0.0 
   });
+  
+  key_resp_5 = new core.Keyboard({psychoJS: psychoJS, clock: new util.Clock(), waitForStart: true});
   
   // Initialize components for Routine "exitRoutine"
   exitRoutineClock = new util.Clock();
@@ -727,6 +730,7 @@ function trialRoutineEnd(snapshot) {
 
 
 var endPracticeMaxDurationReached;
+var _key_resp_5_allKeys;
 var endPracticeMaxDuration;
 var endPracticeComponents;
 function endPracticeRoutineBegin(snapshot) {
@@ -740,11 +744,15 @@ function endPracticeRoutineBegin(snapshot) {
     continueRoutine = true; // until we're told otherwise
     endPracticeMaxDurationReached = false;
     // update component parameters for each repeat
+    key_resp_5.keys = undefined;
+    key_resp_5.rt = undefined;
+    _key_resp_5_allKeys = [];
     psychoJS.experiment.addData('endPractice.started', globalClock.getTime());
     endPracticeMaxDuration = null
     // keep track of which components have finished
     endPracticeComponents = [];
     endPracticeComponents.push(text_6);
+    endPracticeComponents.push(key_resp_5);
     
     endPracticeComponents.forEach( function(thisComponent) {
       if ('status' in thisComponent)
@@ -770,6 +778,31 @@ function endPracticeRoutineEachFrame() {
       text_6.frameNStart = frameN;  // exact frame index
       
       text_6.setAutoDraw(true);
+    }
+    
+    
+    // *key_resp_5* updates
+    if (t >= 0.0 && key_resp_5.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      key_resp_5.tStart = t;  // (not accounting for frame time here)
+      key_resp_5.frameNStart = frameN;  // exact frame index
+      
+      // keyboard checking is just starting
+      psychoJS.window.callOnFlip(function() { key_resp_5.clock.reset(); });  // t=0 on next screen flip
+      psychoJS.window.callOnFlip(function() { key_resp_5.start(); }); // start on screen flip
+      psychoJS.window.callOnFlip(function() { key_resp_5.clearEvents(); });
+    }
+    
+    if (key_resp_5.status === PsychoJS.Status.STARTED) {
+      let theseKeys = key_resp_5.getKeys({keyList: ['space'], waitRelease: false});
+      _key_resp_5_allKeys = _key_resp_5_allKeys.concat(theseKeys);
+      if (_key_resp_5_allKeys.length > 0) {
+        key_resp_5.keys = _key_resp_5_allKeys[_key_resp_5_allKeys.length - 1].name;  // just the last key pressed
+        key_resp_5.rt = _key_resp_5_allKeys[_key_resp_5_allKeys.length - 1].rt;
+        key_resp_5.duration = _key_resp_5_allKeys[_key_resp_5_allKeys.length - 1].duration;
+        // a response ends the routine
+        continueRoutine = false;
+      }
     }
     
     // check for quit (typically the Esc key)
@@ -808,6 +841,18 @@ function endPracticeRoutineEnd(snapshot) {
       }
     });
     psychoJS.experiment.addData('endPractice.stopped', globalClock.getTime());
+    // update the trial handler
+    if (currentLoop instanceof MultiStairHandler) {
+      currentLoop.addResponse(key_resp_5.corr, level);
+    }
+    psychoJS.experiment.addData('key_resp_5.keys', key_resp_5.keys);
+    if (typeof key_resp_5.keys !== 'undefined') {  // we had a response
+        psychoJS.experiment.addData('key_resp_5.rt', key_resp_5.rt);
+        psychoJS.experiment.addData('key_resp_5.duration', key_resp_5.duration);
+        routineTimer.reset();
+        }
+    
+    key_resp_5.stop();
     // the Routine "endPractice" was not non-slip safe, so reset the non-slip timer
     routineTimer.reset();
     
