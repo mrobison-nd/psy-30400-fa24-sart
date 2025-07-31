@@ -335,17 +335,6 @@ function instructionsRoutineEnd(snapshot) {
       }
     }
     psychoJS.experiment.addData('instructions.stopped', globalClock.getTime());
-    // update the trial handler
-    if (currentLoop instanceof MultiStairHandler) {
-      currentLoop.addResponse(key_resp_4.corr, level);
-    }
-    psychoJS.experiment.addData('key_resp_4.keys', key_resp_4.keys);
-    if (typeof key_resp_4.keys !== 'undefined') {  // we had a response
-        psychoJS.experiment.addData('key_resp_4.rt', key_resp_4.rt);
-        psychoJS.experiment.addData('key_resp_4.duration', key_resp_4.duration);
-        routineTimer.reset();
-        }
-    
     key_resp_4.stop();
     // the Routine "instructions" was not non-slip safe, so reset the non-slip timer
     routineTimer.reset();
@@ -843,17 +832,6 @@ function endPracticeRoutineEnd(snapshot) {
       }
     }
     psychoJS.experiment.addData('endPractice.stopped', globalClock.getTime());
-    // update the trial handler
-    if (currentLoop instanceof MultiStairHandler) {
-      currentLoop.addResponse(key_resp_5.corr, level);
-    }
-    psychoJS.experiment.addData('key_resp_5.keys', key_resp_5.keys);
-    if (typeof key_resp_5.keys !== 'undefined') {  // we had a response
-        psychoJS.experiment.addData('key_resp_5.rt', key_resp_5.rt);
-        psychoJS.experiment.addData('key_resp_5.duration', key_resp_5.duration);
-        routineTimer.reset();
-        }
-    
     key_resp_5.stop();
     // the Routine "endPractice" was not non-slip safe, so reset the non-slip timer
     routineTimer.reset();
